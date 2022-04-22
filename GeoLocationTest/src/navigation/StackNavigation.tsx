@@ -17,7 +17,7 @@ export const StackNavigation = () => {
       }
     }}
     >
-      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen name="MapScreen" component={MapScreen} />
     </Stack.Navigator>
   )

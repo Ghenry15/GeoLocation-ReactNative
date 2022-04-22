@@ -1,32 +1,48 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React, { Dispatch, SetStateAction, useCallback, useMemo, useRef, useState } from 'react'
-// import BottomSheet from '@gorhom/bottom-sheet';import { BottomSheet, Button, ListItem } from '@rneui/themed';
-import { launchCamera, launchImageLibrary, ImagePickerResponse } from 'react-native-image-picker';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { BottomSheet, Button, Divider } from 'react-native-elements';
+
+import { check, PERMISSIONS, request } from 'react-native-permissions';
+
+
 const Camera = ({ isVisible, setIsVisible, setTempPhoto, setAvatarLoading }: any) => {
 
     const openGalery = () => {
         setIsVisible(false)
-        setAvatarLoading(true)
         launchImageLibrary({ mediaType: 'photo', quality: 0.5, selectionLimit: 1 },
             ({ assets, didCancel }) => {
+                setAvatarLoading(true)
                 let data: any = assets?.map(img => img)[0];
-                if (didCancel) return;
-                if (!data.uri) return;
+                if (didCancel) {
+                    setAvatarLoading(false)
+                    return
+                };
+                if (!data.uri) {
+                    setAvatarLoading(false)
+                    return
+                };
                 setTempPhoto(data.uri)
-                setIsVisible(false)
                 setAvatarLoading(false)
             })
     }
-    const openCamera = () => {
+    const openCamera = async () => {
+        await request(PERMISSIONS.ANDROID.CAMERA).then((result) => {
+            console.log(result)
+        });
         setIsVisible(false)
-        setAvatarLoading(true)
-        launchCamera({ mediaType: 'photo', quality: 0.5, },
+        await launchCamera({ mediaType: 'photo', quality: 0.5, },
             ({ assets, didCancel }) => {
+                setAvatarLoading(true)
                 let data: any = assets?.map(img => img)[0];
-                if (didCancel) return;
-                if (!data.uri) return;
+                if (didCancel) {
+                    setAvatarLoading(false)
+                    return
+                };
+                if (!data.uri) {
+                    setAvatarLoading(false)
+                    return
+                };
                 setTempPhoto(data.uri)
                 setAvatarLoading(false)
                 console.log(data.uri);

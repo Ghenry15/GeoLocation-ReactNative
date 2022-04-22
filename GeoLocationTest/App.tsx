@@ -3,19 +3,24 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { StackNavigation } from './src/navigation/StackNavigation';
+import { LogBox } from "react-native";
+
+LogBox.ignoreLogs([
+  "exported from 'deprecated-react-native-prop-types'.",
+])
 
 const App = () => {
   return (
-<NavigationContainer>
-    <StackNavigation/>
-</NavigationContainer>
+    <NavigationContainer>
+      <StackNavigation />
+    </NavigationContainer>
   )
 }
 
 export default App
 
 const styles = StyleSheet.create({
-  container:{
-    flex:1
+  container: {
+    flex: 1
   }
 })
