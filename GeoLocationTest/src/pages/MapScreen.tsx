@@ -1,8 +1,9 @@
-import { ActivityIndicator, Platform, StyleSheet, Text, View } from 'react-native'
+import {  Platform, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Maps } from '../component/Maps'
 import { check, PERMISSIONS, PermissionStatus, request } from 'react-native-permissions'
 import { useNavigation } from '@react-navigation/native'
+import { LoadingScreen } from '../component/LoadingScreen'
 
 export const MapScreen = () => {
   const [isAvailibity, setisAvailibity] = useState(false);
@@ -34,7 +35,7 @@ export const MapScreen = () => {
     checkPermissions()
   }, [])
 
-  if (isLoading) return (<ActivityIndicator size={30} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} />)
+  if (isLoading) return (<LoadingScreen/>)
   return (
     <View style={styles.container}>
       {
