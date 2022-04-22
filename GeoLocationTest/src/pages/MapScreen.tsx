@@ -13,7 +13,6 @@ export const MapScreen = () => {
   const checkPermissions = async () => {
     if (Platform.OS === 'android') {
       await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION).then((resp) => {
-        console.log(resp);
         if (resp !== 'granted') {
           setIsLoading(false)
           navigation.goBack()
@@ -23,7 +22,6 @@ export const MapScreen = () => {
       }).catch(console.log);
     } else {
       await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE).then((resp) => {
-        console.log(resp);
         (resp === 'granted')
           ? setisAvailibity(true)
           : () => navigation.goBack();

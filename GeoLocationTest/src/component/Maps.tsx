@@ -1,9 +1,8 @@
-import { NavigationProp } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { StackHeaderProps } from '@react-navigation/stack'
 import React, { useEffect, useRef } from 'react'
 import { Platform, StyleSheet, Text, View } from 'react-native'
-import MapView, { Marker } from 'react-native-maps';
-import Geolocation from '@react-native-community/geolocation';
+import MapView, { Marker, Polyline } from 'react-native-maps';
 import { useLocation } from '../hooks/useLocation';
 import { LoadingScreen } from './LoadingScreen';
 import { FabIcon } from './buttons/FabIcon';
@@ -18,8 +17,9 @@ export const Maps = () => {
         userLocation,
         locationRealTimeUser,
         stopRealTimeUserLocation,
+        routeLines,
         locationError } = useLocation();
-
+    const navigation = useNavigation();
     const mapViewRef = useRef<MapView>();
     const following = useRef<boolean>(true);
 
@@ -53,8 +53,10 @@ export const Maps = () => {
         })
     }
 
+    // if (!isPermissions) return navigation.goBack();
+
     if (!hasLocation) return (
-        <View>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <Text>Obteniendo Ubicación</Text>
             <LoadingScreen />
         </View>
@@ -74,6 +76,11 @@ export const Maps = () => {
                 }}
                 onTouchStart={() => following.current = false}
             >
+                <Polyline
+                    coordinates={routeLines}
+                    strokeColor='#00a4eb'
+                    strokeWidth={4}
+                />
                 <Marker
                     image={require('../assets/icon/markerLogo.png')}
                     key={1}
