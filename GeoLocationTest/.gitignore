@@ -1,8 +1,10 @@
 # OSX
 #
 .DS_Store
-.env.production
+.env
+.env.client
 .env.development
+.env.production
 # Xcode
 #
 build/
