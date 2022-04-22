@@ -11,12 +11,43 @@ import { FabIcon } from './buttons/FabIcon';
 
 
 export const Maps = () => {
-    const { hasLocation, initialPosition, locationError, getCurrentLocation } = useLocation();
+    const {
+        hasLocation,
+        initialPosition,
+        getCurrentLocation,
+        userLocation,
+        locationRealTimeUser,
+        stopRealTimeUserLocation,
+        locationError } = useLocation();
+
     const mapViewRef = useRef<MapView>();
+    const following = useRef<boolean>(true);
+
     console.log(initialPosition)
+
+    useEffect(() => {
+        locationRealTimeUser();
+        return () => {
+            //Cancelar seguimiento en tiempo real
+            stopRealTimeUserLocation();
+        }
+    }, [])
+
+    useEffect(() => {
+        //Si el usuario esta cambiando de vista no vuelvas a la posicion de seguimiento
+        if (!following.current) return;
+        //Seguir con la camara la posicion del usuario
+        const location = userLocation;
+        mapViewRef.current?.animateCamera({
+            center: location
+        })
+    }, [userLocation])
+
+
 
     const handlePositionInitial = async () => {
         const location = await getCurrentLocation();
+        following.current = true;
         mapViewRef.current?.animateCamera({
             center: location
         })
@@ -33,7 +64,7 @@ export const Maps = () => {
         <>
             <MapView
                 ref={(element) => mapViewRef.current = element!}
-                style={{ flex: 1 }}
+                style={{ flex: 1, }}
                 showsUserLocation
                 initialRegion={{
                     latitude: initialPosition.latitude,
@@ -41,6 +72,7 @@ export const Maps = () => {
                     latitudeDelta: 0.0922,
                     longitudeDelta: 0.0421,
                 }}
+                onTouchStart={() => following.current = false}
             >
                 <Marker
                     image={require('../assets/icon/markerLogo.png')}

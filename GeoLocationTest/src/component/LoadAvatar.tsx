@@ -9,7 +9,7 @@ const LoadAvatar = () => {
     const [avatarLoading, setAvatarLoading] = useState(false);
 
     return (
-        <View>
+        <View style={{flex:1,justifyContent:'center'}}>
             <View style={{ ...styles.containerAvatar }}>
                 {avatarLoading && <View style={{ ...styles.containerLoading }}><ActivityIndicator animating={true} /></View>}
                 <TouchableOpacity
