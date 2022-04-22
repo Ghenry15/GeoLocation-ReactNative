@@ -11,18 +11,24 @@ const Camera = ({ isVisible, setIsVisible, setTempPhoto, setAvatarLoading }: any
     const openGalery = () => {
         setIsVisible(false)
         launchImageLibrary({ mediaType: 'photo', quality: 0.5, selectionLimit: 1 },
-            ({ assets, didCancel }) => {
+            ({ assets, didCancel, errorCode }) => {
                 setAvatarLoading(true)
                 let data: any = assets?.map(img => img)[0];
+                console.log(data);
+
+                if (errorCode) {
+                    setAvatarLoading(false)
+                    return;
+                }
                 if (didCancel) {
                     setAvatarLoading(false)
-                    return
+                    return;
                 };
-                if (!data.uri) {
+                if (data === 'denied') {
                     setAvatarLoading(false)
-                    return
+                    return;
                 };
-                setTempPhoto(data.uri)
+                setTempPhoto(data?.uri)
                 setAvatarLoading(false)
             })
     }
@@ -32,20 +38,25 @@ const Camera = ({ isVisible, setIsVisible, setTempPhoto, setAvatarLoading }: any
         });
         setIsVisible(false)
         await launchCamera({ mediaType: 'photo', quality: 0.5, },
-            ({ assets, didCancel }) => {
+            ({ assets, didCancel, errorCode }) => {
                 setAvatarLoading(true)
                 let data: any = assets?.map(img => img)[0];
+                console.log(data);
+
+                if (errorCode) {
+                    setAvatarLoading(false)
+                    return;
+                }
                 if (didCancel) {
                     setAvatarLoading(false)
-                    return
+                    return;
                 };
-                if (!data.uri) {
+                if (data === 'denied') {
                     setAvatarLoading(false)
-                    return
+                    return;
                 };
-                setTempPhoto(data.uri)
+                setTempPhoto(data?.uri)
                 setAvatarLoading(false)
-                console.log(data.uri);
             })
     }
 
