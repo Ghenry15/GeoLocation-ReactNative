@@ -3,6 +3,8 @@
 .DS_Store
 .env.production
 .env.development
+.env
+.env.client
 # Xcode
 #
 build/
