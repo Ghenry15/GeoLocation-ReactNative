@@ -143,6 +143,20 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
+    flavorDimensions "env"
+    productFlavors {
+        client {
+            dimension "env"
+            applicationId "com.geolocationtest"
+            // manifestPlaceholders = [auth0Domain: "mystreamin-stage.us.auth0.com", auth0Scheme: "${applicationId}", scheme: "bukest.client"]
+        }
+        // prod {
+        //     dimension "env"
+        //     applicationId "com.bukestapp"
+        //     manifestPlaceholders = [auth0Domain: "mystreamin.us.auth0.com", auth0Scheme: "${applicationId}", scheme: "bukest"]
+        // }
+    }
+
     defaultConfig {
         applicationId "com.geolocationtest"
         minSdkVersion rootProject.ext.minSdkVersion

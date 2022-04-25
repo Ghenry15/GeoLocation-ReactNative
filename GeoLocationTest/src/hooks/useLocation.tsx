@@ -1,8 +1,6 @@
 import Geolocation from '@react-native-community/geolocation';
 import { useEffect, useRef, useState } from 'react';
 import { Location } from '../interfaces/interface';
-import { check, PERMISSIONS, PermissionStatus, request } from 'react-native-permissions'
-import { Platform } from 'react-native';
 
 export const useLocation = () => {
 
@@ -32,7 +30,7 @@ export const useLocation = () => {
 
 
     useEffect(() => {
-        
+
         getCurrentLocation().then(location => {
             //Si el componente no esta montado no hacer cambios en el state
             if (!isMounted.current) return;
@@ -44,26 +42,6 @@ export const useLocation = () => {
         }).catch((err) => setLocationError(err))
 
     }, [])
-
-    const checkPermissions = () => {
-        return new Promise((resolve, reject) => {
-
-            if (Platform.OS === 'android') {
-                request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION).then((resp) => {
-                    (resp === 'granted')
-                        ? resolve(true)
-                        : reject(resp);
-                }).catch(e => reject(e));
-            } else {
-                request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE).then((resp) => {
-                    (resp === 'granted')
-                        ? resolve(true)
-                        : reject(resp);
-                }).catch(e => reject(e));
-            }
-
-        })
-    }
 
     const getCurrentLocation = (): Promise<Location> => {
         return new Promise((resolve, reject) => {

@@ -8,6 +8,7 @@ import { LogBox } from "react-native";
 LogBox.ignoreLogs([
   "exported from 'deprecated-react-native-prop-types'.",
 ])
+LogBox.ignoreLogs(['new NativeEventEmitter']); // Ignore log notification by message
 
 const App = () => {
   return (

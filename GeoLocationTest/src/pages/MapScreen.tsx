@@ -1,6 +1,6 @@
 import {  Platform, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { Maps } from '../component/Maps'
+import { Maps } from '../component/maps/Maps'
 import { check, PERMISSIONS, PermissionStatus, request } from 'react-native-permissions'
 import { useNavigation } from '@react-navigation/native'
 import { LoadingScreen } from '../component/LoadingScreen'
