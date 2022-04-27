@@ -20,6 +20,9 @@ const palette = {
         gray200: "#F5F5F5",
         gray300: "#ECECEC",
 
+    },
+    blue:{
+        main:'#00a4eb'
     }
 }
 

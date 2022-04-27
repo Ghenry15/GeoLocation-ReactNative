@@ -1,16 +1,20 @@
 import { NavigationProp } from '@react-navigation/native';
 import { StackHeaderProps } from '@react-navigation/stack'
-import React, { useEffect, useRef } from 'react'
-import { Platform, StyleSheet, Text, View } from 'react-native'
+import React, { useEffect, useRef, useState } from 'react'
+import { Platform, StyleSheet, Text, View, Dimensions } from 'react-native'
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import { useLocation } from '../../hooks/useLocation';
 import { LoadingScreen } from '../LoadingScreen';
 import { FabIcon } from '../buttons/FabIcon';
 import CardPin from './CardPin';
 import AdressRoute from './AdressRoute';
+import { palette } from '../../styles/palette';
 
+const { height, width } = Dimensions.get('window');
 
-
+const ASPECT_RATIO = width / height;
+const LATITUDE_DELTA = 0.0922;
+const LONGITUD_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 export const Maps = () => {
     const {
@@ -18,18 +22,18 @@ export const Maps = () => {
         initialPosition,
         getCurrentLocation,
         userLocation,
-        locationRealTimeUser,
+        getLocationRealTimeUser,
         stopRealTimeUserLocation,
         routeLines,
         locationError } = useLocation();
 
     const mapViewRef = useRef<MapView>();
     const following = useRef<boolean>(true);
+    const [positionUser, setPositionUser] = useState();
 
-    console.log(initialPosition)
 
     useEffect(() => {
-        locationRealTimeUser();
+        getLocationRealTimeUser();
         return () => {
             //Cancelar seguimiento en tiempo real
             stopRealTimeUserLocation();
@@ -72,19 +76,20 @@ export const Maps = () => {
                 initialRegion={{
                     latitude: initialPosition.latitude,
                     longitude: initialPosition.longitude,
-                    latitudeDelta: 0.0922,
-                    longitudeDelta: 0.0421,
+                    latitudeDelta: LATITUDE_DELTA,
+                    longitudeDelta: LONGITUD_DELTA,
                 }}
                 onTouchStart={() => following.current = false}
                 userLocationUpdateInterval={3000}
             >
-                <Polyline
-                    coordinates={routeLines}
-                    strokeColor='#00a4eb'
-                    strokeWidth={4}
-                />
                 <CardPin key={1} latitude={initialPosition.latitude} longitude={initialPosition.longitude} />
-            <AdressRoute/>
+                {
+                    routeLines && routeLines.length > 0 && (
+                        <CardPin key={2} latitude={routeLines[0].latitude} longitude={routeLines[0].longitude} />
+                    )
+                }
+                <AdressRoute />
+                <Polyline coordinates={routeLines} strokeColor={palette.dark.metalblue} strokeWidth={3} />
             </MapView>
             <FabIcon nameIcon='compass-outline' onPress={handlePositionInitial} style={{ position: 'absolute', bottom: 10, right: 10 }} />
         </>

@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
 // import { GOOGLE_MAPS_API_KEY } from '@env'
 import MapViewDirections from 'react-native-maps-directions'
+import { palette } from '../../styles/palette';
 // const GOOGLE_MAPS_API_KEY= process.env('GOOGLE_MAPS_API_KEY');
 const GOOGLE_MAPS_APIKEY = 'AIzaSyByLDoZix49gLzFNTp-6sTQLgHBy8H4qVc';
 const AdressRoute = () => {
@@ -16,7 +17,7 @@ const AdressRoute = () => {
             destination={routeLines[1]}
             apikey={GOOGLE_MAPS_APIKEY}
             strokeWidth={4}
-            strokeColor={'#00a4eb'}
+            strokeColor={palette.blue.main}
             onReady={result => {
                 setDistanceAndDuration({
                     km: Math.floor(Math.round(result.distance)),

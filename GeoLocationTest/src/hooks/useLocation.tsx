@@ -1,6 +1,7 @@
 import Geolocation from '@react-native-community/geolocation';
 import { useEffect, useRef, useState } from 'react';
 import { Location } from '../interfaces/interface';
+import { getLocationInst } from '../service/institucion';
 
 export const useLocation = () => {
 
@@ -12,6 +13,11 @@ export const useLocation = () => {
         latitude: 0,
         longitude: 0
     });
+
+    const getMarkerInstitucion = async () => {
+        const routeInst = await getLocationInst(2);
+        console.log(routeInst[0].cords);
+    }
 
     const [userLocation, setUserLocation] = useState<Location>({
         latitude: 0,
@@ -62,7 +68,7 @@ export const useLocation = () => {
         });
     };
 
-    const locationRealTimeUser = () => {
+    const getLocationRealTimeUser = () => {
         watchId.current = Geolocation.watchPosition(
             ({ coords }) => {
                 //Si el componente no esta montado no hacer cambios en el state
@@ -82,6 +88,11 @@ export const useLocation = () => {
         );
     }
 
+    useEffect(() => {
+        getMarkerInstitucion();
+    }, [])
+
+
     const stopRealTimeUserLocation = () => {
         if (watchId.current) Geolocation.clearWatch(watchId.current);
 
@@ -93,7 +104,7 @@ export const useLocation = () => {
         initialPosition,
         getCurrentLocation,
         userLocation,
-        locationRealTimeUser,
+        getLocationRealTimeUser,
         locationError,
         stopRealTimeUserLocation,
         routeLines
