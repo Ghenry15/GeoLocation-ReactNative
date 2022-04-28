@@ -28,7 +28,7 @@ export const useLocation = () => {
 
     useEffect(() => {
         isMounted.current = true;
-
+   
         return () => {
             isMounted.current = false;
         }
